@@ -1,12 +1,12 @@
 import os, sys
 import numpy as np
-from housing.entity.config_entity import ModelEvaluationConfig
-from housing.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact, ModelTrainerArtifact, ModelEvaluationArtifact
-from housing.exception import HousingException
-from housing.logger import logging
-from housing.util.util import load_data, load_object, read_yaml_file, write_yaml_file
-from housing.entity.model_factory import evaluate_regression_model
-from housing.constants import *
+from concrete.entity.config_entity import ModelEvaluationConfig
+from concrete.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact, ModelTrainerArtifact, ModelEvaluationArtifact
+from concrete.exception import ConcreteException
+from concrete.logger import logging
+from concrete.util.util import load_data, load_object, read_yaml_file, write_yaml_file
+from concrete.entity.model_factory import evaluate_regression_model
+from concrete.constants import *
 
 
 class ModelEvaluation:
@@ -22,7 +22,7 @@ class ModelEvaluation:
             self.data_validation_artifact = data_validation_artifact
             self.model_trainer_artifact = model_trainer_artifact
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise ConcreteException(e,sys) from e
 
     def get_best_model(self):
         try:
@@ -38,7 +38,7 @@ class ModelEvaluation:
             model = load_object(file_path=model_eval_file_content[BEST_MODEL_KEY][MODEL_PATH_KEY])
             return model
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise ConcreteException(e,sys) from e
 
     def update_evaluation_report(self, model_evaluation_artifact: ModelEvaluationArtifact):
         try:
@@ -65,7 +65,7 @@ class ModelEvaluation:
             logging.info(f"Updated eval result:{model_eval_content}")
             write_yaml_file(file_path=eval_file_path, data=model_eval_content)
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise ConcreteException(e,sys) from e
 
     def initiate_model_evaluation(self)-> ModelEvaluationArtifact:
         try:
@@ -123,7 +123,7 @@ class ModelEvaluation:
                                                                     is_model_accepted=False)
             return model_evaluation_artifact
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise ConcreteException(e,sys) from e
 
     def __del__(self):
         logging.info(f"{'=' * 20}Model Evaluation log completed.{'=' * 20} ")

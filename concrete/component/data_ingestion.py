@@ -41,7 +41,7 @@ class DataIngestion:
             concrete_file_path = os.path.join(raw_data_dir,
                                 file_name)
             logging.info(f'Reading xls file: [{concrete_file_path}]')
-            concrete_df = pd.read_excel(concrete_file_path)
+            concrete_df = pd.read_csv(concrete_file_path)
             concrete_df['strength_cat'] = pd.cut(concrete_df['concrete_compressive_strength'],
                                        bins= [0,20,40,60,80,np.inf],
                                        labels= [1,2,3,4,5])
@@ -51,9 +51,9 @@ class DataIngestion:
             split = StratifiedShuffleSplit(n_splits=1,
                     test_size=0.2, 
                     random_state=13)
-            for train_index, test_index in split.split(concrete_df,concrete_df['income_cat']):
-                strat_train_set = concrete_df.loc[train_index].drop(['income_cat'], axis=1)
-                strat_test_set = concrete_df.loc[test_index].drop(['income_cat'], axis=1)
+            for train_index, test_index in split.split(concrete_df,concrete_df['strength_cat']):
+                strat_train_set = concrete_df.loc[train_index].drop(['strength_cat'], axis=1)
+                strat_test_set = concrete_df.loc[test_index].drop(['strength_cat'], axis=1)
             train_file_path = os.path.join(self.data_ingestion_config.ingested_train_dir,
                               file_name)
             test_file_path = os.path.join(self.data_ingestion_config.ingested_test_dir,

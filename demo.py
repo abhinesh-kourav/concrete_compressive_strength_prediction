@@ -1,8 +1,7 @@
 import sys, os
-from housing.config.configuration import Configuration
-from housing.exception import HousingException
-from housing.pipeline.pipeline import Pipeline
-from housing.logger import logging
+from concrete.config.configuration import Configuration
+from concrete.pipeline.pipeline import Pipeline
+from concrete.logger import logging
 
 
 def main():

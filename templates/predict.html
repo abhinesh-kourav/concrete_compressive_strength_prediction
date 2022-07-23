@@ -3,7 +3,7 @@
 {% block head %}
 
 
-<title>Housing Estimator</title>
+<title>Strength Estimator</title>
 {% endblock %}
 
 {% block content %}
@@ -13,76 +13,53 @@
 
 
         <form action="/predict" method="post">
-            <legend>Housing Estimation Form</legend>
+            <legend>Strength Estimation Form</legend>
             <div class="mb-3">
-                <label class="form-label">Longitude</label>
-                <input class="form-control" type="text" name="longitude" placeholder="Enter a value of longitude"
+                <label class="form-label">Cement</label>
+                <input class="form-control" type="text" name="cement" placeholder="(in kilograms per cubic meters)"
                     required />
             </div>
             <div class="mb-3">
-                <label class="form-label">Latitude</label>
-                <input class="form-control" type="text" name="latitude" placeholder="Enter a value of latitude"
-                    required />
-
-            </div>
-            <div class="mb-3">
-                <label class="form-label">House Median Age</label>
-                <input class="form-control" type="text" name="housing_median_age"
-                    placeholder="Enter a value of housing_median_age" />
-
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Total Rooms</label>
-                <input class="form-control" type="text" name="total_rooms" placeholder="Enter a value of total_rooms"
+                <label class="form-label">Blast Furnace Slag</label>
+                <input class="form-control" type="text" name="blast_furnace_slag" placeholder="(in kilograms per cubic meters)"
                     required />
 
             </div>
             <div class="mb-3">
-                <label class="form-label">Total Bedrooms</label>
-                <input class="form-control" type="text" name="total_bedrooms"
-                    placeholder="Enter a value of total_bedrooms" required />
+                <label class="form-label">Fly Ash</label>
+                <input class="form-control" type="text" name="fly_ash"
+                    placeholder="(in kilograms per cubic meters)" />
+
             </div>
             <div class="mb-3">
-                <label class="form-label">Population</label>
-                <input class="form-control" type="text" name="population" placeholder="Enter a value of population"
+                <label class="form-label">Water</label>
+                <input class="form-control" type="text" name="water" placeholder="(in kilograms per cubic meters)"
+                    required />
+
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Superplasticizer</label>
+                <input class="form-control" type="text" name="superplasticizer"
+                    placeholder="(in kilograms per cubic meters)" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Coarse Aggregate</label>
+                <input class="form-control" type="text" name="coarse_aggregate" placeholder="(in kilograms per cubic meters)"
                     required />
             </div>
             <div class="mb-3">
-                <label class="form-label">Households</label>
-                <input class="form-control" type="text" name="households" placeholder="Enter a value of households"
+                <label class="form-label">Fine Aggregate</label>
+                <input class="form-control" type="text" name="fine_aggregate" placeholder="(in kilograms per cubic meters)"
                     required />
             </div>
             <div class="mb-3">
-                <label class="form-label">Median Income</label>
-                <input class="form-control" type="text" name="median_income"
-                    placeholder="Enter a value of median_income" required />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Ocean Proximity</label>
-                <select class="form-control" name="ocean_proximity" placeholder="Enter a value of ocean_proximity"
-                    required>
-
-                    <option value="<1H OCEAN">
-                        &lt;1H OCEAN
-                    </option>
-                    <option value="INLAND">
-                        INLAND
-                    </option>
-                    <option value="NEAR BAY">
-                        NEAR BAY
-                    </option>
-                    <option value="NEAR OCEAN">
-                        NEAR OCEAN
-                    </option>
-                    <option value="ISLAND">
-                        ISLAND
-                    </option>
-
-                </select>
+                <label class="form-label">Age</label>
+                <input class="form-control" type="text" name="age"
+                    placeholder="(in days)" required />
             </div>
             <div class="mb-3">
 
-                <input class="btn btn-primary" type="submit" value="Predict Median House Value" required />
+                <input class="btn btn-primary" type="submit" value="Predict Concrete Compressive Strength" required />
             </div>
 
         </form>
@@ -91,18 +68,18 @@
     <div class="col-md-6 col-sm-12 col-xs-6 col-lg-6">
         <div class="card">
             <div class="card-header">
-              California housing price
+              Concrete Compressive Strength
             </div>
             <div class="card-body">
-        {% if context['housing_data'] is not none %}
+        {% if context['concrete_data'] is not none %}
         <table class="table table-striped">
-            <caption>Califoria Housing Prediction </caption>
+            <caption>Concrete Strength Prediction </caption>
             <tr>
                 <th>Input Feature</th>
                 <th>Feature Value</th>
 
             </tr>
-            {% for column,value in context['housing_data'].items() %}
+            {% for column,value in context['concrete_data'].items() %}
 
 
 
@@ -114,9 +91,9 @@
             {% endfor %}
             <tr>
 
-                <td>median_house_value </td>
+                <td>concrete_compressive_strength (in MPa)</td>
                 <td>
-                    {{ context['median_house_value'] }}
+                    {{ context['concrete_compressive_strength'] }}
                 </td>
             </tr>
         </table>
@@ -124,7 +101,7 @@
         {% else %}
        
               <h5 class="card-title">Submit Form</h5>
-              <p class="card-text">Kindly provide necessary information to estimate housing price in california</p>
+              <p class="card-text">Kindly provide necessary information to estimate concrete compressive strength</p>
             
          
 
