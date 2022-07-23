@@ -14,10 +14,10 @@ def get_requirements_list()->List[str]:
         return requirements_file.readlines().remove('-e .')
 
 setup(
-    name = 'housing-price-predictor',
+    name = 'concrete-strength-estimator',
     version='0.0.2',
     author='Abhinesh Kourav',
-    description='This is the first FSDS ML project',
+    description='Estimate concrete compressive strength without waiting for 28 days like in conventional UCS test.',
     packages=find_packages(),
     install_requires = get_requirements_list()
 )
