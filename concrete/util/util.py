@@ -99,4 +99,13 @@ def load_object(file_path:str):
         with open(file_path, "rb") as file_obj:
             return dill.load(file_obj)
     except Exception as e:
-        raise ConcreteException(e,sys) from e 
+        raise ConcreteException(e,sys) from e
+
+
+def get_previous_timestamp_dir(dir:str):
+    try:
+        folder_name = os.listdir(dir)
+        previous_timestamp_dir = os.path.join(dir, f"{folder_name[-2]}")
+        return previous_timestamp_dir
+    except Exception as e:
+        raise ConcreteException(e, sys) from e

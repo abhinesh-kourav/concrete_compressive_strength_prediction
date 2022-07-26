@@ -3,9 +3,9 @@ import sys
 import pandas as pd
 from concrete.constants import *
 from concrete.exception import ConcreteException
-from concrete.entity.config_entity import DataValidationConfig
+from concrete.entity.config_entity import DataInjestionConfig, DataValidationConfig
 from concrete.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact
-from concrete.util.util import read_yaml_file
+from concrete.util.util import read_yaml_file, get_previous_timestamp_dir
 from evidently.model_profile import Profile
 from evidently.model_profile.sections import DataDriftProfileSection
 from evidently.dashboard import Dashboard
@@ -27,12 +27,14 @@ class DataValidation:
             self.train_df = pd.read_csv(self.train_file_path)
             self.test_df = pd.read_csv(self.test_file_path)
             self.schema = read_yaml_file(self.data_validation_config.schema_file_path)
+            self.previous_train_file_path = self.data_ingestion_artifact.previous_train_file_path
+            self.previous_train_df = pd.read_csv(self.previous_train_file_path)
         except Exception as e:
             raise ConcreteException(e,sys) from e
 
     def do_train_test_files_exist(self)-> True:
         try:
-            logging.info("Checking if test and trai file exists.")
+            logging.info("Checking if test and train file exists.")
             does_train_file_exist = False
             does_test_file_exist = True
             does_train_file_exist = os.path.exists(self.train_file_path)
@@ -116,7 +118,7 @@ class DataValidation:
     def get_and_save_data_drift_report(self):
         try:
             profile = Profile(sections = [DataDriftProfileSection()])
-            profile.calculate(self.train_df, self.test_df)
+            profile.calculate(self.train_df, self.previous_train_df)
             report = json.loads(profile.json())
             report_file_path = self.data_validation_config.report_file_path
             os.makedirs(os.path.dirname(report_file_path), exist_ok=True)
@@ -130,7 +132,7 @@ class DataValidation:
     def save_data_drift_report_page(self):
         try:
             dashboard = Dashboard(tabs= [DataDriftTab()])
-            dashboard.calculate(self.train_df, self.test_df)
+            dashboard.calculate(self.train_df, self.previous_train_df)
             dashboard.save(self.data_validation_config.report_page_file_path)
         except Exception as e:
             raise ConcreteException(e,sys) from e

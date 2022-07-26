@@ -3,6 +3,7 @@ from collections import namedtuple
 DataIngestionArtifact = namedtuple('DataIngestionArtifact',
                                     ["train_file_path",
                                     "test_file_path",
+                                    "previous_train_file_path",
                                     "is_ingested",
                                     "message"])
 

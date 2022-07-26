@@ -17,7 +17,7 @@ class DataIngestion:
         except Exception as e:
             raise ConcreteException(e,sys) from e
 
-    def download_housing_data(self)-> str:
+    def download_concrete_data(self)-> str:
         try:
             #Extracting remote url to download dataset
             download_url = self.data_ingestion_config.dataset_download_url
@@ -33,11 +33,27 @@ class DataIngestion:
         except Exception as e:
             raise ConcreteException(e,sys) from e
 
+    def get_previous_train_file_path(self, train_file_name):
+        try:
+            ingested_data_dir, train_folder = os.path.split(self.data_ingestion_config.ingested_train_dir)
+            timestamp_dir, ingested_data_folder = os.path.split(ingested_data_dir)
+            data_ingestion_dir =  os.path.dirname(timestamp_dir)
+            previous_timestamp_folder = os.listdir(data_ingestion_dir)[-1]
+            previous_train_file_path = os.path.join(data_ingestion_dir,
+                                                    previous_timestamp_folder,
+                                                    ingested_data_folder,
+                                                    train_folder,
+                                                    train_file_name)
+            return previous_train_file_path
+        except Exception as e:
+            raise ConcreteException(e,sys) from e
+
 
     def split_data_as_train_test(self):
         try:
             raw_data_dir = self.data_ingestion_config.raw_data_dir
             file_name = os.listdir(raw_data_dir)[0]
+            previous_train_file_path = self.get_previous_train_file_path(file_name)
             concrete_file_path = os.path.join(raw_data_dir,
                                 file_name)
             logging.info(f'Reading xls file: [{concrete_file_path}]')
@@ -73,7 +89,8 @@ class DataIngestion:
             data_ingestion_artifact = DataIngestionArtifact(train_file_path=train_file_path,
                                                             test_file_path=test_file_path,
                                                             is_ingested=True,
-                                                            message=f"Data Ingestion Completed sucessfully")
+                                                            message=f"Data Ingestion Completed sucessfully",
+                                                            previous_train_file_path=previous_train_file_path)
             logging.info(f'Data Ingestion Artifact: {data_ingestion_artifact}')
             return data_ingestion_artifact
         except Exception as e:
@@ -81,7 +98,7 @@ class DataIngestion:
 
     def initiate_data_ingestion(self)->DataIngestionArtifact:
         try:
-            self.download_housing_data()
+            self.download_concrete_data()
             return self.split_data_as_train_test()
         except Exception as e:
             raise ConcreteException(e,sys) from e
