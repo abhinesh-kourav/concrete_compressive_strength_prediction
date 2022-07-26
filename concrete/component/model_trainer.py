@@ -7,7 +7,7 @@ from concrete.entity.model_factory import ModelFactory, GridSearchedBestModel, M
 import os, sys
 from typing import List
 
-class HousingEstimatorModel:
+class EstimatorModel:
     def __init__(self, preprocessing_object, trained_model_object):
         """
         TrainedModel constructor
@@ -76,9 +76,9 @@ class ModelTrainer:
             preprocessing_obj=  load_object(file_path=self.data_transformation_artifact.preprocessed_object_file_path)
             model_object = metric_info.model_object
             trained_model_file_path=self.model_trainer_config.trained_model_file_path
-            housing_model = HousingEstimatorModel(preprocessing_object=preprocessing_obj,trained_model_object=model_object)
+            model = EstimatorModel(preprocessing_object=preprocessing_obj,trained_model_object=model_object)
             logging.info(f"Saving model at path: {trained_model_file_path}")
-            save_object(file_path=trained_model_file_path,obj=housing_model)
+            save_object(file_path=trained_model_file_path,obj=model)
             model_trainer_artifact = ModelTrainerArtifact(is_trained=True,
                                                           message="Model Trained successfully",
                                                           trained_model_file_path=trained_model_file_path,
