@@ -32,14 +32,5 @@ All above features measured in kg/$m^3$
 ##### Output
 * Concrete Compressive Strength (Mpa)
 
-## 3. Modeling and Evaluation
-
-* Algorithms used
-  * Ridge Regression
-  * GradientBoosting Regression
-  * Random Forests Regression
-
-* Metric - Since the target variable is a continuous variable, regression evaluation metric RMSE (Root Mean Squared Error) and R2 Score (Coefficient of Determination) have been used.
-
-## 4. References
+## References
 1. https://archive.ics.uci.edu/ml/datasets/Concrete+Compressive+Strength
